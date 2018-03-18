@@ -2,6 +2,15 @@
 
 #include "TankPlayerController.h"
 
+// Called every frame
+void ATankPlayerController::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+	// AimTowardsCrosshair();
+
+}
+   
+
 void ATankPlayerController::BeginPlay()
 {
 	Super::BeginPlay();

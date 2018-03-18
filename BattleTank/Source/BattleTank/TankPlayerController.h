@@ -16,9 +16,11 @@ class BATTLETANK_API ATankPlayerController : public APlayerController
 	GENERATED_BODY()
 	
 public: 
+	// Called every frame
+	virtual void Tick(float DeltaTime) override;
+	virtual void BeginPlay() override;
+
 	ATank* GetControlledTank() const; 
-	
-	void BeginPlay() override; 
 
 	ATank* ControlledTank = nullptr;
 };

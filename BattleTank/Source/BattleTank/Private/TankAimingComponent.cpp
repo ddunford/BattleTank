@@ -24,14 +24,10 @@ void UTankAimingComponent::SetBarrelReference(UTankBarrel* BarrelToSet)
 
 void UTankAimingComponent::AimAt(FVector HitLocation, float LaunchSpeed)
 {
-	auto OurTankName = GetOwner()->GetName();
-	auto BarrelLocation = Barrel->GetComponentLocation();
-
 	if (!Barrel) { return; }
 
 	FVector OutLaunchVelocity;
 	FVector StartLocation = Barrel->GetSocketLocation(FName("Projectile"));
-
 	bool bHaveAimSolution = UGameplayStatics::SuggestProjectileVelocity
 	(
 		this,
@@ -48,15 +44,10 @@ void UTankAimingComponent::AimAt(FVector HitLocation, float LaunchSpeed)
 	if (bHaveAimSolution) 
 	{
 		auto AimDirection = OutLaunchVelocity.GetSafeNormal();
-		
-		auto Time = GetWorld()->GetTimeSeconds();
-		UE_LOG(LogTemp, Warning, TEXT("%f Aim found %f"), Time);
-
 		MoveBarrelTowards(AimDirection);
-	}
-	else {
+
 		auto Time = GetWorld()->GetTimeSeconds();
-		UE_LOG(LogTemp, Warning, TEXT("%f Aim not found"), Time);
+		UE_LOG(LogTemp, Warning, TEXT("%f AimDirection: %s"), Time, *AimDirection.ToString());
 	}
 }
 
@@ -67,6 +58,11 @@ void UTankAimingComponent::MoveBarrelTowards(FVector AimDirection)
 	auto AimAsRotator = AimDirection.Rotation();
 	auto DeltaRotator = AimAsRotator - BarrelRotator;
 
-	Barrel->Elevate(1); //TODO remove magic number
+	auto Time = GetWorld()->GetTimeSeconds();
+	UE_LOG(LogTemp, Warning, TEXT("%f AimAsRotator: %s"), Time, *AimAsRotator.ToString());
+	UE_LOG(LogTemp, Warning, TEXT("%f BarrelRotator: %s"), Time, *BarrelRotator.ToString());
+	UE_LOG(LogTemp, Warning, TEXT("%f DeltaRotator.Pitch: %f"), Time, DeltaRotator.Pitch);
+
+	Barrel->Elevate(DeltaRotator.Pitch);
 
 }

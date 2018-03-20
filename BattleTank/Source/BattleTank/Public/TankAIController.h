@@ -6,12 +6,6 @@
 #include "AIController.h"
 #include "TankAIController.generated.h"
 
-//forward declarations
-class ATank; 
-
-/**
- * 
- */
 UCLASS()
 class BATTLETANK_API ATankAIController : public AAIController
 {
@@ -19,11 +13,7 @@ class BATTLETANK_API ATankAIController : public AAIController
 	
 private:
 	
+	void BeginPlay() override;
+
 	virtual void Tick(float DeltaTime) override;
-	void BeginPlay() override; 
-
-	ATank* GetControlledTank() const;
-	ATank* GetPlayerTank() const; 
-
-	ATank* ControlledTank = nullptr;
 };

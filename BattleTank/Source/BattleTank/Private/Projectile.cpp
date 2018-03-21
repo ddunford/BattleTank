@@ -11,6 +11,10 @@ AProjectile::AProjectile()
 	PrimaryActorTick.bCanEverTick = true;
 
 	ProjectileMovement = CreateDefaultSubobject<UProjectileMovementComponent>(FName("Projectile Movement Component"));
+	if (!ProjectileMovement) {
+		UE_LOG(LogTemp, Warning, TEXT("AProjectile: Missing UProjectileMovementComponent"));
+		return;
+	}
 	ProjectileMovement->bAutoActivate = false;
 
 }
@@ -31,6 +35,8 @@ void AProjectile::Tick(float DeltaTime)
 
 void AProjectile::LaunchProjectile(float Speed)
 {
+	if (!ProjectileMovement) { return; }
+
 	auto Time = GetWorld()->GetTimeSeconds();
 	UE_LOG(LogTemp, Warning, TEXT("%f: Projectile fires at %f"), Time, Speed);
 

@@ -41,7 +41,12 @@ void ATank::Fire()
 			Barrel->GetSocketRotation(FName("Projectile"))
 			);
 
-		Projectile->LaunchProjectile(LaunchSpeed);
+		if (!Projectile) {
+			UE_LOG(LogTemp, Warning, TEXT("ATanke: Projectile not returned "));
+			return;
+		}
+
+		Projectile->LaunchProjectile(LaunchSpeed);	
 		LastFireTime = FPlatformTime::Seconds();
 	}
 }

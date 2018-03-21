@@ -2,6 +2,7 @@
 
 #include "Tank.h"
 #include "TankAimingComponent.h"
+#include "TankMovementComponent.h"
 #include "Projectile.h"
 #include "TankBarrel.h"
 #include "Engine/World.h"
@@ -14,6 +15,7 @@ ATank::ATank()
 	PrimaryActorTick.bCanEverTick = false;
 
 	TankAimingComponent = CreateDefaultSubobject<UTankAimingComponent>(FName("Aiming Component"));
+	TankMovementComponent = CreateDefaultSubobject<UTankMovementComponent>(FName("Movement Component"));
 
 
 }
@@ -42,7 +44,7 @@ void ATank::Fire()
 			);
 
 		if (!Projectile) {
-			UE_LOG(LogTemp, Warning, TEXT("ATanke: Projectile not returned "));
+			UE_LOG(LogTemp, Error, TEXT("ATanke: Projectile not returned "));
 			return;
 		}
 

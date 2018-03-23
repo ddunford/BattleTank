@@ -13,10 +13,7 @@ void ATankAIController::Tick(float DeltaTime)
 	auto PlayerTank = Cast<ATank>(GetWorld()->GetFirstPlayerController()->GetPawn());
 	auto ControlledTank = Cast<ATank>(GetPawn());
 
-	if (!PlayerTank || !ControlledTank) {
-		UE_LOG(LogTemp, Error, TEXT("PlayerTank or ControlledTank not found "));
-		return;
-	}
+	if (!ensure(PlayerTank || ControlledTank)) { return; }
 
 	//move towards the player 
 	MoveToActor(PlayerTank, AcceptanceRadius);

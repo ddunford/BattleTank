@@ -17,11 +17,11 @@ ATank::ATank()
 
 void ATank::Fire()
 {
+	if (!ensure(Barrel)) { return;  }
+
 	bool isReloaded = (FPlatformTime::Seconds() - LastFireTime) > ReloadTimeInSeconds;
 
-	auto Barrel = Cast<UTankBarrel>(GetComponentByClass(UTankBarrel::StaticClass()));
-
-	if (Barrel && isReloaded) {
+	if (isReloaded) {
 
 		// Spawn a projectile at the socket location 
 		auto Projectile = GetWorld()->SpawnActor<AProjectile>(
@@ -30,8 +30,8 @@ void ATank::Fire()
 			Barrel->GetSocketRotation(FName("Projectile"))
 			);
 
-		if (!Projectile) {
-			UE_LOG(LogTemp, Error, TEXT("ATanke: Projectile not returned "));
+		if (!ensure(Projectile)) {
+			UE_LOG(LogTemp, Error, TEXT("ATank: Projectile not returned "));
 			return;
 		}
 
@@ -46,18 +46,9 @@ void ATank::BeginPlay()
 	Super::BeginPlay();
 }
 
-
-// Called to bind functionality to input
-void ATank::SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent)
-{
-	Super::SetupPlayerInputComponent(PlayerInputComponent);
-}
-
 void ATank::AimAt(FVector HitLocation)
 {
-	auto TankAimingComponent = Cast<UTankAimingComponent>(GetComponentByClass(UTankAimingComponent::StaticClass()));
-	if (!TankAimingComponent) { return; }
-
+	if (!ensure(TankAimingComponent)) { return; }
 	TankAimingComponent->AimAt(HitLocation, LaunchSpeed);
 }
 
